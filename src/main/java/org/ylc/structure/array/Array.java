@@ -11,16 +11,23 @@ package org.ylc.structure.array;
  * @date 2019/12/9 21:33
  */
 public class Array {
+
     /**
-     * 数组体
+     * 存放数据
      */
     private long[] arr;
 
     /**
      * 当前元素的个数
+     * 最大索引为 elemNu -1
      */
     private int elemNu;
 
+    /**
+     * 初始化数组
+     *
+     * @param max 最大长度
+     */
     public Array(int max) {
         this.arr = new long[max];
         this.elemNu = 0;
@@ -32,7 +39,7 @@ public class Array {
      * @param elem 新增的元素
      */
     public void insert(long elem) {
-        this.arr[elemNu++] = elem;
+        this.arr[this.elemNu++] = elem;
     }
 
     /**
@@ -44,7 +51,7 @@ public class Array {
      * @param elem 要删除的项目
      * @return boolean
      */
-    public boolean deleteFirst(long elem) {
+    public boolean deleteOne(long elem) {
         // 要删除元素的索引
         int delIndex;
         for (delIndex = 0; delIndex < this.elemNu; delIndex++) {
@@ -53,16 +60,46 @@ public class Array {
             }
         }
         // 不存在，直接返回false
-        if (delIndex == elem) {
+        if (delIndex == this.elemNu) {
             return false;
         }
         // 元素个数-1
         this.elemNu--;
         // 将后面的元素向前移动一位
         for (int newIndex = delIndex; newIndex < this.elemNu; newIndex++) {
-            System.out.println(newIndex);
             this.arr[newIndex] = this.arr[newIndex + 1];
         }
+        return true;
+    }
+
+    /**
+     * 删除所有目标元素
+     * 目标元素在数组中的位置不固定，没删除一个都需要将后面的元素前移，效率低下，
+     * 这里通过另外一个数组去赋值元素的方法，避免了元素的位移
+     *
+     * @param elem 要删除的元素
+     * @return boolean
+     */
+    public boolean deleteAll(long elem) {
+        // 重新定义
+        long[] newArr = new long[this.arr.length];
+        // 删除的数量
+        int delNu = 0;
+        // 新的索引
+        int newIndex = 0;
+        for (int index = 0; index < this.elemNu; index++) {
+            if (elem == this.arr[index]) {
+                delNu++;
+            } else {
+                newArr[newIndex++] = this.arr[index];
+            }
+        }
+        // 目标元素没有匹配到，删除失败
+        if (delNu == 0) {
+            return false;
+        }
+        this.elemNu -= delNu;
+        this.arr = newArr;
         return true;
     }
 
@@ -88,9 +125,14 @@ public class Array {
      */
     public void display() {
         System.out.println(">>>>>>>>>>>>>>>>");
+        System.out.println("size:" + this.elemNu);
+        StringBuilder strArray = new StringBuilder("[");
         for (int i = 0; i < this.elemNu; i++) {
-            System.out.println(this.arr[i]);
+            strArray.append(this.arr[i]);
+            strArray.append(", ");
         }
+        strArray.append("]");
+        System.out.println(strArray.toString());
         System.out.println("<<<<<<<<<<<<<<<<");
     }
 }
