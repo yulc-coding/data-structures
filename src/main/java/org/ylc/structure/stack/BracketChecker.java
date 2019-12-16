@@ -77,9 +77,4 @@ public class BracketChecker {
         return true;
     }
 
-    public static void main(String[] args) {
-        BracketChecker bracketChecker = new BracketChecker("(a{b[c]d}e)");
-        System.out.println("验证格式：" + bracketChecker.check());
-    }
-
 }

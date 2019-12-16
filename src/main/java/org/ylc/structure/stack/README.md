@@ -12,8 +12,7 @@
 * 文本符号匹配 如 '(' 匹配 ')'，'{' 匹配 '}'，'[' 匹配 ']'
 
 # 代码实现：
-## Stack 栈的基本接口
 ## StackUseArray 用数组实现栈
 ## StackUseLink 用链表实现栈
 ## BracketChecker 栈运用的样例，用于校验文本括号的合法性 
-## Run 运行入口
+## Run 测试入口

@@ -10,7 +10,7 @@ package org.ylc.structure.stack;
  * @version 1.0.0
  * @date 2019-12-15
  */
-public class StackUseArray<E> implements Stack<E> {
+public class StackUseArray<E> {
 
     // 最大容量
     private int maxSize;
@@ -32,7 +32,6 @@ public class StackUseArray<E> implements Stack<E> {
      *
      * @param data 数据
      */
-    @Override
     public void push(E data) {
         if (isFull()) {
             System.out.println("栈已满，不能再添加了！！！");
@@ -47,7 +46,6 @@ public class StackUseArray<E> implements Stack<E> {
      * @return data
      */
     @SuppressWarnings("unchecked")
-    @Override
     public E pop() {
         if (isEmpty()) {
             System.out.println("栈已空了，不能再删除了！！！");
@@ -62,7 +60,6 @@ public class StackUseArray<E> implements Stack<E> {
      * @return data
      */
     @SuppressWarnings("unchecked")
-    @Override
     public E peek() {
         if (isEmpty()) {
             System.out.println("这是个空栈！！！");
@@ -76,7 +73,6 @@ public class StackUseArray<E> implements Stack<E> {
      *
      * @return boolean
      */
-    @Override
     public boolean isEmpty() {
         return this.top == -1;
     }
@@ -86,7 +82,6 @@ public class StackUseArray<E> implements Stack<E> {
      *
      * @return boolean
      */
-    @Override
     public boolean isFull() {
         return this.top == (this.maxSize - 1);
     }
