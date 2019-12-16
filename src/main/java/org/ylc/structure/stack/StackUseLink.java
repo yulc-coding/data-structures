@@ -4,47 +4,61 @@ package org.ylc.structure.stack;
  * 代码千万行，注释第一行，
  * 注释不规范，同事泪两行。
  * <p>
- * 栈接口
+ * 用链表实现栈
  *
- * @author yulc
+ * @author YuLc
  * @version 1.0.0
  * @date 2019/12/16
  */
-public interface Stack<E> {
+public class StackUseLink<E> implements Stack<E> {
 
     /**
      * 顶端插入数据
      *
      * @param data 数据
      */
-    void push(E data);
+    @Override
+    public void push(E data) {
+
+    }
 
     /**
      * 移除顶端数据，并返回移除的数据
      *
      * @return data
      */
-    E pop();
+    @Override
+    public E pop() {
+        return null;
+    }
 
     /**
      * 查询顶部数据
      *
      * @return data
      */
-    E peek();
+    @Override
+    public E peek() {
+        return null;
+    }
 
     /**
      * 检查是否为空
      *
      * @return boolean
      */
-    boolean isEmpty();
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 
     /**
      * 检查是否已经满了
      *
      * @return boolean
      */
-    boolean isFull();
-
+    @Override
+    public boolean isFull() {
+        return false;
+    }
 }
