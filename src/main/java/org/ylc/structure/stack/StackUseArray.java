@@ -12,13 +12,19 @@ package org.ylc.structure.stack;
  */
 public class StackUseArray<E> {
 
-    // 最大容量
+    /**
+     * 最大容量
+     */
     private int maxSize;
 
-    // 数据数组
+    /**
+     * 数据数组
+     */
     private Object[] array;
 
-    // 执行栈顶
+    /**
+     * 执行栈顶
+     */
     private int top;
 
     public StackUseArray(int maxSize) {
