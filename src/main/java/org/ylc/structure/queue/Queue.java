@@ -13,7 +13,7 @@ package org.ylc.structure.queue;
 public class Queue<E> {
 
     /**
-     * 容量
+     * 队列的最大容量
      */
     private int maxSize;
 
@@ -33,7 +33,7 @@ public class Queue<E> {
     private int rear;
 
     /**
-     * 数据数组
+     * 存储数据的数组
      */
     private Object[] array;
 
@@ -104,7 +104,6 @@ public class Queue<E> {
     public E peekRear() {
         return (E) array[rear];
     }
-
 
     public boolean isFull() {
         return this.items == this.maxSize;
