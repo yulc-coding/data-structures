@@ -11,6 +11,11 @@ package org.ylc.structure.queue;
 public class Run {
 
     public static void main(String[] args) {
+        queueTest();
+        priorityQueueTest();
+    }
+
+    private static void queueTest() {
         Queue<String> queue = new Queue<>(5);
         queue.enque("A");
         queue.enque("B");
@@ -28,4 +33,24 @@ public class Run {
         System.out.println(queue.deque());
     }
 
+    private static void priorityQueueTest() {
+        PriorityQueue<Integer> queue = new PriorityQueue<>(5);
+        queue.enque(26);
+        System.out.println("插入26，目前顶端数据：" + queue.peekFront());
+        queue.enque(13);
+        System.out.println("插入13，目前顶端数据：" + queue.peekFront());
+        queue.enque(78);
+        System.out.println("插入78，目前顶端数据：" + queue.peekFront());
+        queue.enque(50);
+        System.out.println("插入50，目前顶端数据：" + queue.peekFront());
+        queue.enque(11);
+        System.out.println("插入11，目前顶端数据：" + queue.peekFront());
+        queue.enque(100);
+        System.out.println(queue.deque());
+        System.out.println(queue.deque());
+        System.out.println(queue.deque());
+        System.out.println(queue.deque());
+        System.out.println(queue.deque());
+        System.out.println(queue.deque());
+    }
 }

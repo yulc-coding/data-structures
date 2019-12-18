@@ -49,7 +49,7 @@ public class PriorityQueue<E extends Comparable<E>> {
         }
         // 要插入的索引位置
         int index;
-        for (index = items - 1; index > 0; index--) {
+        for (index = items - 1; index >= 0; index--) {
             // 插入数据的优先级大于当前元素，在当前元素后面插入
             if (data.compareTo((E) array[index]) >= 0) {
                 break;
