@@ -4,21 +4,21 @@ package org.ylc.structure.tree;
  * 代码千万行，注释第一行，
  * 注释不规范，同事泪两行。
  * <p>
- * 二叉树
+ * 二叉搜索树
  *
  * @author YuLc
  * @version 1.0.0
  * @date 2019/12/18
  */
-public class BinaryTree<E extends Comparable<E>> {
+public class BinarySearchTree<E extends Comparable<E>> {
 
     private TreeNode<E> root;
 
-    public BinaryTree() {
+    public BinarySearchTree() {
         this.root = null;
     }
 
-    private void insert(E data) {
+    public void insert(E data) {
         TreeNode<E> newNode = new TreeNode<>(data, null, null);
         if (root == null) {
             this.root = newNode;
@@ -51,37 +51,38 @@ public class BinaryTree<E extends Comparable<E>> {
         }
     }
 
-    private boolean remove(E data) {
+    public boolean remove(E data) {
         if (isEmpty()) {
             return false;
         }
 
         TreeNode<E> parentNode;
-        TreeNode<E> curNode = root;
+        TreeNode<E> delNode = root;
         boolean isLeftNode = true;
         int compare;
+        // 找到要删除的节点
         while (true) {
-            parentNode = curNode;
-            compare = data.compareTo(curNode.data);
+            parentNode = delNode;
+            compare = data.compareTo(delNode.data);
             if (compare == 0) {
                 break;
             }
             if (compare < 0) {
                 isLeftNode = true;
-                curNode = curNode.leftChild;
+                delNode = delNode.leftChild;
             } else {
                 isLeftNode = false;
-                curNode = curNode.rightChild;
+                delNode = delNode.rightChild;
             }
-            if (curNode == null) {
+            if (delNode == null) {
                 System.out.println(String.format("删除失败，没有当前数据【%s】", data));
                 return false;
             }
         }
         // 1、没有子节点
-        if (curNode.leftChild == null && curNode.rightChild == null) {
+        if (delNode.leftChild == null && delNode.rightChild == null) {
             // 删除根目录
-            if (curNode == root) {
+            if (delNode == root) {
                 this.root = null;
                 return true;
             }
@@ -90,32 +91,46 @@ public class BinaryTree<E extends Comparable<E>> {
             } else {
                 parentNode.rightChild = null;
             }
-        } else if (curNode.rightChild == null) {
-            if (curNode == root) {
-                root = curNode.leftChild;
+        } else if (delNode.rightChild == null) {
+            // 2.1 只有左节点
+            if (delNode == root) {
+                root = delNode.leftChild;
             } else {
                 if (isLeftNode) {
-                    parentNode.leftChild = curNode.leftChild;
+                    parentNode.leftChild = delNode.leftChild;
                 } else {
-                    parentNode.rightChild = curNode.leftChild;
+                    parentNode.rightChild = delNode.leftChild;
                 }
             }
-        } else if (curNode.leftChild == null) {
-            if (curNode == root) {
-                root = curNode.rightChild;
+        } else if (delNode.leftChild == null) {
+            // 2.2 只有左节点
+            if (delNode == root) {
+                root = delNode.rightChild;
             } else {
                 if (isLeftNode) {
-                    parentNode.leftChild = curNode.rightChild;
+                    parentNode.leftChild = delNode.rightChild;
                 } else {
-                    parentNode.rightChild = curNode.rightChild;
+                    parentNode.rightChild = delNode.rightChild;
+                }
+            }
+        } else {
+            // 有2个子节点，先获取代替删除节点的节点
+            TreeNode<E> successor = getSuccessor(delNode);
+            if (delNode == root) {
+                root = successor;
+            } else {
+                if (isLeftNode) {
+                    parentNode.leftChild = successor;
+                } else {
+                    parentNode.rightChild = successor;
                 }
             }
         }
-
         return true;
     }
 
-    private boolean contains(E data) {
+
+    public boolean contains(E data) {
         if (isEmpty()) {
             return false;
         }
@@ -141,7 +156,7 @@ public class BinaryTree<E extends Comparable<E>> {
      *
      * @return 最左边的节点值
      */
-    private E findMin() {
+    public E findMin() {
         if (isEmpty()) {
             return null;
         }
@@ -157,7 +172,7 @@ public class BinaryTree<E extends Comparable<E>> {
      *
      * @return 最右边的节点值
      */
-    private E findMax() {
+    public E findMax() {
         if (isEmpty()) {
             return null;
         }
@@ -168,8 +183,53 @@ public class BinaryTree<E extends Comparable<E>> {
         return curNode.data;
     }
 
-    private boolean isEmpty() {
+    /**
+     * 中序打印
+     */
+    public void printTree() {
+        print(root);
+    }
+
+    public boolean isEmpty() {
         return root == null;
+    }
+
+    /**
+     * 获取代替删除节点的节点
+     * 第一个比删除节点值大的元素
+     * 即删除节点右节点的左子孙节点
+     *
+     * @param delNode 要删除的元素
+     * @return node
+     */
+    private TreeNode<E> getSuccessor(TreeNode<E> delNode) {
+        // 要代替删除节点的节点
+        TreeNode<E> successor = delNode;
+        // 代替节点的父节点
+        TreeNode<E> successorParent = delNode;
+        TreeNode<E> curNode = delNode.rightChild;
+        while (curNode != null) {
+            successorParent = successor;
+            successor = curNode;
+            curNode = curNode.leftChild;
+        }
+        // 删除节点的右节点存在左子节点
+        if (successor != delNode.rightChild) {
+            // 上移代替节点的右子节点
+            successorParent.leftChild = successor.rightChild;
+            successor.rightChild = delNode.rightChild;
+        }
+        // 代替节点的左子节点执行删除节点的左子节点
+        successor.leftChild = delNode.leftChild;
+        return successor;
+    }
+
+    private void print(TreeNode<E> node) {
+        if (node != null) {
+            print(node.leftChild);
+            System.out.println(node.data);
+            print(node.rightChild);
+        }
     }
 
     private static class TreeNode<E> {
@@ -186,4 +246,5 @@ public class BinaryTree<E extends Comparable<E>> {
             this.rightChild = rightChild;
         }
     }
+
 }
