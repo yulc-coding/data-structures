@@ -18,6 +18,27 @@ public class BinarySearchTree<E extends Comparable<E>> {
         this.root = null;
     }
 
+    public TreeNode<E> find(E data) {
+        TreeNode<E> curNode = root;
+        int compareResult;
+        while (true) {
+            compareResult = data.compareTo(curNode.data);
+            if (compareResult == 0) {
+                break;
+            }
+            if (compareResult < 0) {
+                curNode = curNode.leftChild;
+            } else {
+                curNode = curNode.rightChild;
+            }
+            if (curNode == null) {
+                return null;
+            }
+        }
+        return curNode;
+    }
+
+
     public void insert(E data) {
         TreeNode<E> newNode = new TreeNode<>(data, null, null);
         if (root == null) {
@@ -128,7 +149,6 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
         return true;
     }
-
 
     public boolean contains(E data) {
         if (isEmpty()) {

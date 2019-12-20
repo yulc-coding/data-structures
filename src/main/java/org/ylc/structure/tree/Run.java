@@ -21,8 +21,10 @@ public class Run {
         tree.insert(12);
         System.out.println("max:" + tree.findMax());
         System.out.println("min:" + tree.findMin());
+        System.out.println("exists 9 :" + tree.contains(9));
         tree.printTree();
-        tree.remove(9);
+        System.out.println("remove 9 result:" + tree.remove(9));
+        System.out.println("exists 9 :" + tree.contains(9));
         tree.printTree();
     }
 }
