@@ -38,7 +38,6 @@ public class BinarySearchTree<E extends Comparable<E>> {
         return curNode;
     }
 
-
     public void insert(E data) {
         TreeNode<E> newNode = new TreeNode<>(data, null, null);
         if (root == null) {
@@ -124,7 +123,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
                 }
             }
         } else if (delNode.leftChild == null) {
-            // 2.2 只有左节点
+            // 2.2 只有右节点
             if (delNode == root) {
                 root = delNode.rightChild;
             } else {
