@@ -5,6 +5,7 @@ package org.ylc.structure.tree;
  * 注释不规范，同事泪两行。
  * <p>
  * 二叉搜索树
+ * 这里用while循环的方式比用递归的方式更好
  *
  * @author YuLc
  * @version 1.0.0
@@ -38,6 +39,10 @@ public class BinarySearchTree<E extends Comparable<E>> {
         return curNode;
     }
 
+    /**
+     * while循环的方式插入数据，
+     * 比递归方式更好
+     */
     public void insert(E data) {
         TreeNode<E> newNode = new TreeNode<>(data, null, null);
         if (root == null) {
@@ -71,23 +76,48 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * 递归发插入数据
+     * 代码简洁
+     */
+    public void insertRecursive(E data) {
+        root = insertNode(data, root);
+    }
+
+    private TreeNode<E> insertNode(E data, TreeNode<E> treeNode) {
+        if (treeNode == null) {
+            return new TreeNode<>(data, null, null);
+        }
+        int compareResult = data.compareTo(treeNode.data);
+
+        if (compareResult > 0) {
+            treeNode.rightChild = insertNode(data, treeNode.rightChild);
+        } else if (compareResult < 0) {
+            treeNode.leftChild = insertNode(data, treeNode.leftChild);
+        } else {
+            System.out.println(String.format("已存在相同元素【%s】", data));
+        }
+        return treeNode;
+    }
+
     public boolean remove(E data) {
         if (isEmpty()) {
             return false;
         }
-
+        // 删除节点的父节点
         TreeNode<E> parentNode;
         TreeNode<E> delNode = root;
+        // 要删除的节点是否为左子节点
         boolean isLeftNode = true;
-        int compare;
+        int compareResult;
         // 找到要删除的节点
         while (true) {
             parentNode = delNode;
-            compare = data.compareTo(delNode.data);
-            if (compare == 0) {
+            compareResult = data.compareTo(delNode.data);
+            if (compareResult == 0) {
                 break;
             }
-            if (compare < 0) {
+            if (compareResult < 0) {
                 isLeftNode = true;
                 delNode = delNode.leftChild;
             } else {
@@ -111,30 +141,8 @@ public class BinarySearchTree<E extends Comparable<E>> {
             } else {
                 parentNode.rightChild = null;
             }
-        } else if (delNode.rightChild == null) {
-            // 2.1 只有左节点
-            if (delNode == root) {
-                root = delNode.leftChild;
-            } else {
-                if (isLeftNode) {
-                    parentNode.leftChild = delNode.leftChild;
-                } else {
-                    parentNode.rightChild = delNode.leftChild;
-                }
-            }
-        } else if (delNode.leftChild == null) {
-            // 2.2 只有右节点
-            if (delNode == root) {
-                root = delNode.rightChild;
-            } else {
-                if (isLeftNode) {
-                    parentNode.leftChild = delNode.rightChild;
-                } else {
-                    parentNode.rightChild = delNode.rightChild;
-                }
-            }
-        } else {
-            // 有2个子节点，先获取代替删除节点的节点
+        } else if (delNode.leftChild != null && delNode.rightChild != null) {
+            // 有两个子节点，先获取代替删除节点的后继节点
             TreeNode<E> successor = getSuccessor(delNode);
             if (delNode == root) {
                 root = successor;
@@ -143,6 +151,18 @@ public class BinarySearchTree<E extends Comparable<E>> {
                     parentNode.leftChild = successor;
                 } else {
                     parentNode.rightChild = successor;
+                }
+            }
+        } else {
+            // 只有1个子节点的，获取不为空的子节点
+            TreeNode<E> childNode = delNode.leftChild == null ? delNode.rightChild : delNode.leftChild;
+            if (delNode == root) {
+                root = childNode;
+            } else {
+                if (isLeftNode) {
+                    parentNode.leftChild = childNode;
+                } else {
+                    parentNode.rightChild = childNode;
                 }
             }
         }
@@ -214,17 +234,18 @@ public class BinarySearchTree<E extends Comparable<E>> {
     }
 
     /**
-     * 获取代替删除节点的节点
-     * 第一个比删除节点值大的元素
-     * 即删除节点右节点的左子孙节点
+     * 获取代替删除节点的节点：后继节点
+     * 第一个比删除节点值大的元素即删除节点右节点的左子孙节点
+     * 如果后继节点点存在右子节点，这个右子节点将代替后继节点。
+     * 后继节点的左子节点指向删除节点的左子节点
      *
      * @param delNode 要删除的元素
      * @return node
      */
     private TreeNode<E> getSuccessor(TreeNode<E> delNode) {
-        // 要代替删除节点的节点
+        // 后继节点
         TreeNode<E> successor = delNode;
-        // 代替节点的父节点
+        // 后继节点的父节点
         TreeNode<E> successorParent = delNode;
         TreeNode<E> curNode = delNode.rightChild;
         while (curNode != null) {
@@ -234,11 +255,11 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
         // 删除节点的右节点存在左子节点
         if (successor != delNode.rightChild) {
-            // 上移代替节点的右子节点
+            // 上移后继节点的右子节点
             successorParent.leftChild = successor.rightChild;
             successor.rightChild = delNode.rightChild;
         }
-        // 代替节点的左子节点执行删除节点的左子节点
+        // 后继节点的左子节点指向删除节点的左子节点
         successor.leftChild = delNode.leftChild;
         return successor;
     }
